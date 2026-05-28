@@ -36,12 +36,12 @@ export default function Nav() {
         className={cn(
           "fixed top-0 inset-x-0 z-50 transition-all duration-300",
           scrolled
-            ? "bg-zinc-950/80 backdrop-blur-xl border-b border-zinc-800/60 shadow-lg shadow-black/20"
+            ? "bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl border-b border-zinc-200/60 dark:border-zinc-800/60 shadow-sm dark:shadow-lg dark:shadow-black/20"
             : "bg-transparent"
         )}
       >
         <div className="max-w-5xl mx-auto px-5 h-16 flex items-center justify-between">
-          <a href="#" className="font-mono text-sm font-medium text-violet-400 hover:text-violet-300 transition-colors">
+          <a href="#" className="font-mono text-sm font-medium text-violet-600 dark:text-violet-400 hover:text-violet-500 dark:hover:text-violet-300 transition-colors">
             ng<span className="animate-blink">_</span>
           </a>
 
@@ -50,7 +50,7 @@ export default function Nav() {
               <a
                 key={l.href}
                 href={l.href}
-                className="px-4 py-2 text-sm font-medium text-zinc-400 hover:text-white transition-colors rounded-lg hover:bg-zinc-800/50"
+                className="px-4 py-2 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800/50"
               >
                 {l.label}
               </a>
@@ -61,7 +61,7 @@ export default function Nav() {
             {mounted && (
               <button
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                className="p-2 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
+                className="p-2 rounded-lg text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
                 aria-label="Toggle theme"
               >
                 {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
@@ -69,7 +69,7 @@ export default function Nav() {
             )}
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="md:hidden p-2 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
+              className="md:hidden p-2 rounded-lg text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
               aria-label="Toggle menu"
             >
               {menuOpen ? <X size={16} /> : <Menu size={16} />}
@@ -85,7 +85,7 @@ export default function Nav() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.18 }}
-            className="fixed top-16 inset-x-0 z-40 bg-zinc-950/95 backdrop-blur-xl border-b border-zinc-800 md:hidden"
+            className="fixed top-16 inset-x-0 z-40 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-xl border-b border-zinc-200 dark:border-zinc-800 md:hidden"
           >
             <div className="flex flex-col p-4 gap-1">
               {links.map((l) => (
@@ -93,7 +93,7 @@ export default function Nav() {
                   key={l.href}
                   href={l.href}
                   onClick={() => setMenuOpen(false)}
-                  className="px-4 py-3 text-sm font-medium text-zinc-400 hover:text-white transition-colors rounded-lg hover:bg-zinc-800"
+                  className="px-4 py-3 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800"
                 >
                   {l.label}
                 </a>
