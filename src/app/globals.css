@@ -10,56 +10,38 @@
 }
 
 @layer base {
-  * {
-    @apply border-zinc-800;
-  }
+  * { @apply border-zinc-200 dark:border-zinc-800; }
 
-  html {
-    scroll-behavior: smooth;
-  }
+  html { scroll-behavior: smooth; }
 
   body {
-    @apply bg-zinc-950 text-zinc-50 antialiased;
+    @apply bg-white text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50 antialiased;
     font-family: var(--font-inter);
   }
 
-  .dark body {
-    @apply bg-zinc-950 text-zinc-50;
-  }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { @apply bg-zinc-100 dark:bg-zinc-950; }
+  ::-webkit-scrollbar-thumb { @apply bg-zinc-300 dark:bg-zinc-700 rounded-full; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-zinc-400 dark:bg-zinc-600; }
 
-  ::-webkit-scrollbar {
-    width: 6px;
-  }
-  ::-webkit-scrollbar-track {
-    @apply bg-zinc-950;
-  }
-  ::-webkit-scrollbar-thumb {
-    @apply bg-zinc-700 rounded-full;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    @apply bg-zinc-600;
-  }
-
-  ::selection {
-    @apply bg-violet-500/30 text-white;
-  }
+  ::selection { @apply bg-violet-500/20 text-violet-900 dark:bg-violet-500/30 dark:text-white; }
 }
 
 @layer utilities {
   .text-gradient {
-    @apply bg-gradient-to-r from-violet-400 via-purple-400 to-blue-400 bg-clip-text text-transparent;
-  }
-
-  .glow-violet {
-    box-shadow: 0 0 40px rgba(139, 92, 246, 0.15);
+    @apply bg-gradient-to-r from-violet-500 via-purple-500 to-blue-500 bg-clip-text text-transparent;
   }
 
   .card-hover {
-    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-violet-500/10 hover:border-violet-500/30;
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-violet-500/30;
   }
 
   .dot-grid {
-    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0);
+    background-image: radial-gradient(circle at 1px 1px, rgba(0,0,0,0.055) 1px, transparent 0);
     background-size: 28px 28px;
+  }
+
+  .dark .dot-grid {
+    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0);
   }
 }
