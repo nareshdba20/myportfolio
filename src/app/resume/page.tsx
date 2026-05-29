@@ -1,6 +1,6 @@
 import Nav from "@/components/nav";
 import Footer from "@/components/footer";
-import PrintButton from "@/components/print-button";
+import LogoImage from "@/components/logo-image";
 
 export const metadata = {
   title: "Resume — Naresh Gowda",
@@ -11,6 +11,7 @@ const experience = [
   {
     initials: "EV",
     color: "bg-violet-100 dark:bg-violet-500/10 text-violet-700 dark:text-violet-300",
+
     company: "Evozn Inc",
     location: "Dallas, TX, USA",
     role: "Database & DevOps Engineer",
@@ -26,6 +27,7 @@ const experience = [
   {
     initials: "DL",
     color: "bg-blue-100 dark:bg-blue-500/10 text-blue-700 dark:text-blue-300",
+
     company: "Deloitte India Ltd",
     location: "India",
     role: "Cloud Engineer",
@@ -42,13 +44,14 @@ const experience = [
   {
     initials: "EP",
     color: "bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
+
     company: "Epayslip.com",
     location: "India",
     role: "Database Engineer",
     period: "Oct 2018 – Jan 2020",
     current: false,
     bullets: [
-      "Installed and managed Oracle (10g–12c), PostgreSQL, MySQL, and MongoDB on Linux/Windows.",
+      "Installed and managed Oracle (10g–19c), PostgreSQL, MySQL, and MongoDB on Linux/Windows.",
       "Administered AWS EC2-hosted databases with CloudWatch alarms for real-time monitoring.",
       "Developed RMAN backup/recovery plans and implemented SQL Server TDE for data security.",
       "Supported full lifecycle DB migrations from dev to production in 3-tier architectures.",
@@ -91,14 +94,9 @@ export default function ResumePage() {
       <div className="max-w-3xl mx-auto px-5 pt-28 pb-20">
 
         {/* Header */}
-        <div className="flex items-start justify-between gap-4 mb-14">
-          <div>
-            <p className="font-mono text-xs font-medium text-violet-600 dark:text-violet-400 uppercase tracking-widest mb-3">// resume</p>
-            <h1 className="text-4xl sm:text-5xl font-extrabold text-zinc-900 dark:text-white tracking-tight">My Resume</h1>
-          </div>
-          <div className="print:hidden shrink-0 mt-6">
-            <PrintButton />
-          </div>
+        <div className="mb-14">
+          <p className="font-mono text-xs font-medium text-violet-600 dark:text-violet-400 uppercase tracking-widest mb-3">// resume</p>
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-zinc-900 dark:text-white tracking-tight">My Resume</h1>
         </div>
 
         {/* Work Experience */}
@@ -106,10 +104,7 @@ export default function ResumePage() {
           <div className="space-y-6">
             {experience.map((job) => (
               <div key={job.company} className="flex gap-4">
-                {/* Logo */}
-                <div className={`w-11 h-11 rounded-xl flex items-center justify-center font-bold text-xs shrink-0 ${job.color}`}>
-                  {job.initials}
-                </div>
+                <LogoImage fallback={job.initials} fallbackClass={job.color} />
 
                 {/* Content */}
                 <div className="flex-1 min-w-0">
@@ -136,6 +131,44 @@ export default function ResumePage() {
                       </li>
                     ))}
                   </ul>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Section>
+
+        {/* Education */}
+        <Section title="Education">
+          <div className="space-y-6">
+            {[
+              {
+                initials: "SAU",
+                color: "bg-pink-100 dark:bg-pink-500/10 text-pink-700 dark:text-pink-300",
+
+                degree: "Master of Science, Computer Science",
+                school: "Southern Arkansas University",
+                location: "Magnolia, AR, USA",
+                period: "May 2023 – Jun 2025",
+              },
+              {
+                initials: "VTU",
+                color: "bg-amber-100 dark:bg-amber-500/10 text-amber-700 dark:text-amber-300",
+
+                degree: "Bachelor of Engineering, Electronics & Communication",
+                school: "Visvesvaraya Technological University (VTU)",
+                location: "Karnataka, India",
+                period: "2013 – 2017",
+              },
+            ].map((edu) => (
+              <div key={edu.school} className="flex gap-4">
+                <LogoImage fallback={edu.initials} fallbackClass={edu.color} />
+                <div className="flex-1 min-w-0 pt-1">
+                  <div className="flex flex-wrap items-start justify-between gap-1 mb-0.5">
+                    <p className="font-semibold text-zinc-900 dark:text-white text-sm">{edu.degree}</p>
+                    <span className="font-mono text-[11px] text-zinc-400 shrink-0">{edu.period}</span>
+                  </div>
+                  <p className="text-xs text-violet-600 dark:text-violet-400 font-medium mt-0.5">{edu.school}</p>
+                  <p className="text-[11px] text-zinc-400 mt-0.5">{edu.location}</p>
                 </div>
               </div>
             ))}
