@@ -5,13 +5,14 @@ import { useTheme } from "next-themes";
 import { Moon, Sun, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const links = [
-  { href: "#about", label: "About" },
-  { href: "#projects", label: "Projects" },
-  { href: "#skills", label: "Skills" },
-  { href: "#blog", label: "Blog" },
-  { href: "#contact", label: "Contact" },
+  { href: "/about", label: "About" },
+  { href: "/projects", label: "Projects" },
+  { href: "/blog", label: "Blog" },
+  { href: "/resume", label: "Resume" },
 ];
 
 export default function Nav() {
@@ -19,6 +20,7 @@ export default function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     setMounted(true);
@@ -41,19 +43,24 @@ export default function Nav() {
         )}
       >
         <div className="max-w-5xl mx-auto px-5 h-16 flex items-center justify-between">
-          <a href="#" className="font-mono text-sm font-medium text-violet-600 dark:text-violet-400 hover:text-violet-500 dark:hover:text-violet-300 transition-colors">
+          <Link href="/" className="font-mono text-sm font-medium text-violet-600 dark:text-violet-400 hover:text-violet-500 dark:hover:text-violet-300 transition-colors">
             ng<span className="animate-blink">_</span>
-          </a>
+          </Link>
 
           <div className="hidden md:flex items-center gap-1">
             {links.map((l) => (
-              <a
+              <Link
                 key={l.href}
                 href={l.href}
-                className="px-4 py-2 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800/50"
+                className={cn(
+                  "px-4 py-2 text-sm font-medium transition-colors rounded-lg",
+                  pathname === l.href
+                    ? "text-zinc-900 dark:text-white bg-zinc-100 dark:bg-zinc-800/50"
+                    : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800/50"
+                )}
               >
                 {l.label}
-              </a>
+              </Link>
             ))}
           </div>
 
@@ -89,14 +96,19 @@ export default function Nav() {
           >
             <div className="flex flex-col p-4 gap-1">
               {links.map((l) => (
-                <a
+                <Link
                   key={l.href}
                   href={l.href}
                   onClick={() => setMenuOpen(false)}
-                  className="px-4 py-3 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  className={cn(
+                    "px-4 py-3 text-sm font-medium transition-colors rounded-lg",
+                    pathname === l.href
+                      ? "text-zinc-900 dark:text-white bg-zinc-100 dark:bg-zinc-800"
+                      : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  )}
                 >
                   {l.label}
-                </a>
+                </Link>
               ))}
             </div>
           </motion.div>

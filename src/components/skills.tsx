@@ -24,13 +24,7 @@ export default function Skills() {
   const inView = useInView(ref, { once: true, margin: "-60px" });
 
   return (
-    <section id="skills" className="py-28 px-5">
-      <div className="max-w-5xl mx-auto" ref={ref}>
-        <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5 }} className="mb-12">
-          <p className="font-mono text-xs font-medium text-violet-600 dark:text-violet-400 uppercase tracking-widest mb-3">// skills</p>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-zinc-900 dark:text-white tracking-tight">Tech Stack</h2>
-        </motion.div>
-
+    <div ref={ref}>
         <div className="grid sm:grid-cols-2 gap-6">
           {skills.map((group, gi) => (
             <motion.div
@@ -59,7 +53,6 @@ export default function Skills() {
             </motion.div>
           ))}
         </div>
-      </div>
-    </section>
+    </div>
   );
 }
