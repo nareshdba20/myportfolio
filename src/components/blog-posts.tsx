@@ -5,6 +5,8 @@ import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { WPPost } from "@/lib/wordpress";
 import { formatDate, stripHtml } from "@/lib/wordpress";
+import { ownPosts, type OwnPost } from "@/data/posts";
+import Link from "next/link";
 
 const CATEGORIES = [
   "Latest",
@@ -27,10 +29,14 @@ type Props = {
 export default function BlogPosts({ posts }: Props) {
   const [selected, setSelected] = useState("Latest");
 
-  // When own blog is wired up, filter by category slug.
-  // For now, Latest shows all WordPress posts; other tabs show coming soon.
-  const isLatest = selected === "Latest";
-  const filtered = isLatest ? posts : [];
+  const filteredOwn: OwnPost[] =
+    selected === "Latest"
+      ? ownPosts
+      : ownPosts.filter((p) => p.category === selected);
+
+  const filteredWP: WPPost[] = selected === "Latest" ? posts : [];
+
+  const hasContent = filteredOwn.length > 0 || filteredWP.length > 0;
 
   return (
     <div>
@@ -55,19 +61,36 @@ export default function BlogPosts({ posts }: Props) {
         ))}
       </div>
 
-      {/* Posts */}
-      {!isLatest ? (
+      {!hasContent ? (
         <div className="text-center py-20">
           <p className="text-zinc-400 text-sm">
             <span className="font-medium text-zinc-600 dark:text-zinc-300">{selected}</span> posts coming soon.
           </p>
-          <p className="text-zinc-400 text-xs mt-1">Own blog system launching shortly.</p>
+          <p className="text-zinc-400 text-xs mt-1">More content launching shortly.</p>
         </div>
-      ) : filtered.length === 0 ? (
-        <div className="text-center py-16 text-zinc-400 text-sm">Could not load posts right now.</div>
       ) : (
         <div className="flex flex-col divide-y divide-zinc-200 dark:divide-zinc-800">
-          {filtered.map((post) => (
+          {/* Own posts */}
+          {filteredOwn.map((post) => (
+            <Link
+              key={post.slug}
+              href={`/blog/${post.slug}`}
+              className="group flex items-start justify-between gap-6 py-5"
+            >
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-zinc-900 dark:text-white group-hover:text-violet-600 dark:group-hover:text-violet-300 transition-colors text-sm mb-1">
+                  {post.title}
+                </p>
+                <p className="text-xs text-zinc-500 leading-relaxed line-clamp-2">{post.excerpt}</p>
+              </div>
+              <div className="flex flex-col items-end gap-1.5 shrink-0">
+                <span className="font-mono text-[11px] text-zinc-400">{post.date}</span>
+                <ArrowUpRight size={14} className="text-zinc-300 group-hover:text-violet-500 transition-colors" />
+              </div>
+            </Link>
+          ))}
+          {/* WordPress posts */}
+          {filteredWP.map((post) => (
             <a
               key={post.id}
               href={post.link}
