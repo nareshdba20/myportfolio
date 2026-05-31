@@ -1,4 +1,3 @@
-import Nav from "@/components/nav";
 import Footer from "@/components/footer";
 import Skills from "@/components/skills";
 import { workExperience, portfolio } from "@/data/portfolio";
@@ -12,9 +11,7 @@ export const metadata = {
 export default function AboutPage() {
   return (
     <main className="min-h-screen">
-      <Nav />
-
-      <div className="max-w-5xl mx-auto px-5 pt-28 pb-20">
+      <div className="max-w-3xl mx-auto px-8 sm:px-12 pt-16 pb-20">
 
         {/* Header */}
         <div className="mb-14">

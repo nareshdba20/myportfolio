@@ -1,4 +1,3 @@
-import Nav from "@/components/nav";
 import Footer from "@/components/footer";
 import LogoImage from "@/components/logo-image";
 
@@ -89,9 +88,7 @@ const skillSections = [
 export default function ResumePage() {
   return (
     <main className="min-h-screen">
-      <Nav />
-
-      <div className="max-w-3xl mx-auto px-5 pt-28 pb-20">
+      <div className="max-w-3xl mx-auto px-8 sm:px-12 pt-16 pb-20">
 
         {/* Header */}
         <div className="mb-14">

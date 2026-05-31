@@ -1,4 +1,3 @@
-import Nav from "@/components/nav";
 import Footer from "@/components/footer";
 import { projects } from "@/data/portfolio";
 import { Github, ExternalLink } from "lucide-react";
@@ -20,9 +19,7 @@ export default function ProjectsPage() {
 
   return (
     <main className="min-h-screen">
-      <Nav />
-
-      <div className="max-w-5xl mx-auto px-5 pt-28 pb-20">
+      <div className="max-w-3xl mx-auto px-8 sm:px-12 pt-16 pb-20">
         <div className="mb-12">
           <p className="font-mono text-xs font-medium text-violet-600 dark:text-violet-400 uppercase tracking-widest mb-3">// projects</p>
           <h1 className="text-4xl sm:text-5xl font-extrabold text-zinc-900 dark:text-white tracking-tight mb-3">Projects</h1>
