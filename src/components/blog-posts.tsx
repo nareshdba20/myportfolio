@@ -35,16 +35,19 @@ export default function BlogPosts({ posts }: Props) {
   return (
     <div>
       {/* Underline tab filter */}
-      <div className="flex items-center border-b border-zinc-200 dark:border-zinc-800 mb-8 overflow-x-auto scrollbar-none gap-0">
+      <div
+        className="flex items-center border-b border-zinc-200 dark:border-zinc-800 mb-8 overflow-x-auto"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}
+      >
         {CATEGORIES.map((cat) => (
           <button
             key={cat}
             onClick={() => setSelected(cat)}
             className={cn(
-              "px-4 py-2.5 text-sm font-medium whitespace-nowrap border-b-2 -mb-px transition-colors",
+              "px-3 py-1 text-sm font-medium whitespace-nowrap border-b-2 -mb-px transition-colors",
               selected === cat
                 ? "border-blue-500 text-zinc-900 dark:text-white"
-                : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
+                : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200"
             )}
           >
             {cat}
