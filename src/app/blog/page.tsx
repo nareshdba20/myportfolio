@@ -1,6 +1,6 @@
 import Footer from "@/components/footer";
 import BlogPosts from "@/components/blog-posts";
-import { getPosts, getCategories } from "@/lib/wordpress";
+import { getPosts } from "@/lib/wordpress";
 import { BookOpen } from "lucide-react";
 import { portfolio } from "@/data/portfolio";
 
@@ -10,20 +10,16 @@ export const metadata = {
 };
 
 export default async function BlogPage() {
-  const [posts, categories] = await Promise.all([
-    getPosts({ per_page: 50 }),
-    getCategories(),
-  ]);
+  const posts = await getPosts({ per_page: 50 });
 
   return (
     <main className="min-h-screen">
       <div className="max-w-3xl px-5 sm:px-8 md:px-12 pt-14 pb-20">
-        <div className="mb-12">
-          <p className="font-mono text-xs font-medium text-violet-600 dark:text-violet-400 uppercase tracking-widest mb-3">// blog</p>
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-zinc-900 dark:text-white tracking-tight mb-3">Writing</h1>
+        <div className="mb-10">
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-zinc-900 dark:text-white tracking-tight mb-3">My Blog</h1>
           <p className="text-zinc-500 dark:text-zinc-400 text-sm max-w-lg leading-relaxed">
             Documenting database internals, backend engineering, and technical problems I solve day-to-day.
-            My goal: what took me hours to figure out takes you minutes.
+            What took me hours to figure out should take you minutes.
           </p>
         </div>
 
@@ -43,7 +39,7 @@ export default async function BlogPage() {
             </a>
           </div>
         ) : (
-          <BlogPosts posts={posts} categories={categories} />
+          <BlogPosts posts={posts} />
         )}
       </div>
 
