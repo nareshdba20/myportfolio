@@ -20,12 +20,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       <body>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <div className="flex min-h-screen">
-            <Nav />
-            {/* Offset for sidebar on desktop, bottom bar on mobile */}
-            <div className="flex-1 md:ml-16 pb-14 md:pb-0">
-              {children}
-            </div>
+          <Nav />
+          {/* ml-16 on desktop offsets the fixed sidebar; pb-16 on mobile offsets the fixed bottom nav */}
+          <div className="md:ml-16 pb-16 md:pb-0 min-h-screen">
+            {children}
           </div>
         </ThemeProvider>
       </body>

@@ -12,7 +12,7 @@ export default async function Home() {
     <main className="min-h-screen">
 
       {/* Hero */}
-      <section className="min-h-screen flex flex-col justify-center px-8 sm:px-12 py-20 max-w-3xl">
+      <section className="min-h-screen flex flex-col justify-center px-5 sm:px-8 md:px-12 py-20 max-w-3xl">
         <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-4">
           Hi, I&apos;m{" "}
           <span className="text-violet-600 dark:text-violet-400 font-semibold">Naresh Gowda</span>
@@ -69,7 +69,7 @@ export default async function Home() {
       </section>
 
       {/* Featured Projects */}
-      <section className="py-16 px-8 sm:px-12 border-t border-zinc-200 dark:border-zinc-800">
+      <section className="py-16 px-5 sm:px-8 md:px-12 border-t border-zinc-200 dark:border-zinc-800">
         <div className="max-w-3xl">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-widest font-mono">Featured Projects</h2>
@@ -93,7 +93,7 @@ export default async function Home() {
       </section>
 
       {/* Recent Writing */}
-      <section className="py-16 px-8 sm:px-12 border-t border-zinc-200 dark:border-zinc-800">
+      <section className="py-16 px-5 sm:px-8 md:px-12 border-t border-zinc-200 dark:border-zinc-800">
         <div className="max-w-3xl">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-widest font-mono">Recent Writing</h2>

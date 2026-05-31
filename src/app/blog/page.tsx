@@ -17,7 +17,7 @@ export default async function BlogPage() {
 
   return (
     <main className="min-h-screen">
-      <div className="max-w-3xl mx-auto px-8 sm:px-12 pt-16 pb-20">
+      <div className="max-w-3xl px-5 sm:px-8 md:px-12 pt-14 pb-20">
         <div className="mb-12">
           <p className="font-mono text-xs font-medium text-violet-600 dark:text-violet-400 uppercase tracking-widest mb-3">// blog</p>
           <h1 className="text-4xl sm:text-5xl font-extrabold text-zinc-900 dark:text-white tracking-tight mb-3">Writing</h1>

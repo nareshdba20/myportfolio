@@ -88,7 +88,7 @@ const skillSections = [
 export default function ResumePage() {
   return (
     <main className="min-h-screen">
-      <div className="max-w-3xl mx-auto px-8 sm:px-12 pt-16 pb-20">
+      <div className="max-w-3xl px-5 sm:px-8 md:px-12 pt-14 pb-20">
 
         {/* Header */}
         <div className="mb-14">
