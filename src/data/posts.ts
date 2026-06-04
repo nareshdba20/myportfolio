@@ -9,6 +9,24 @@ export type OwnPost = {
 
 export const ownPosts: OwnPost[] = [
   {
+    slug: "github-branch-protection-free",
+    title: "GitHub Branch Protection on Private Repos — Without Paying for Team Plan",
+    date: "2026-06-03",
+    category: "DevOps",
+    readTime: "4 min read",
+    excerpt:
+      "GitHub Rulesets on private repos require the Team plan. Here is a GitHub Actions workaround that blocks direct pushes to main and prevents deploys from running — completely free.",
+  },
+  {
+    slug: "ec2-bedrock-textract-iam-fix",
+    title: "EC2 Not Authorized to Call Bedrock or Textract — How to Fix IAM Permissions",
+    date: "2026-06-03",
+    category: "Cloud",
+    readTime: "5 min read",
+    excerpt:
+      "How to fix the 'is not authorized to perform: bedrock:InvokeModel' error when running AI workloads on EC2 — adding the right IAM policies for Bedrock and Textract in under two minutes.",
+  },
+  {
     slug: "aws-dev-environment-setup",
     title: "Setting Up a Production-Mirror Dev Environment on AWS",
     date: "2026-06-02",
