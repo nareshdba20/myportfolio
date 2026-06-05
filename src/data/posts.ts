@@ -63,6 +63,15 @@ export const ownPosts: OwnPost[] = [
       "Complete step-by-step guide to setting up Oracle Data Guard with Far Sync and COLO2 DR for a 6-node RAC cluster — covering Primary config, Local HA standby, COLO2 standby, Far Sync instance, and DG Broker setup.",
   },
   {
+    slug: "nodejs-multiple-websocket-servers-same-http",
+    title: "Running Multiple WebSocket Servers on the Same Node.js HTTP Server",
+    date: "2025-06-01",
+    category: "DevOps",
+    readTime: "4 min read",
+    excerpt:
+      "When you add a second WebSocket server to the same HTTP server in Node.js, connections silently fail. Here's the exact problem and the fix using noServer: true with manual HTTP upgrade handling.",
+  },
+  {
     slug: "oracle-rolling-forward-standby-rman-incremental",
     title: "Rolling Forward a Physical Standby Using RMAN Incremental Backup (DocID 836986.1)",
     date: "2025-05-29",
