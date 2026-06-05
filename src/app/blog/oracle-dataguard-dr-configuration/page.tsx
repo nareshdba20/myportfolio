@@ -1,6 +1,8 @@
 import Footer from "@/components/footer";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft, Clock, Tag } from "lucide-react";
+import drSetup from "./oracle dr setup.png";
 
 export const metadata = {
   title: "Oracle Data Guard DR Configuration — Naresh Gowda",
@@ -35,6 +37,26 @@ export default function OracleDGConfig() {
         </div>
 
         <div className="space-y-1">
+
+          {/* Architecture diagram */}
+          <div className="my-6 rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800">
+            <Image
+              src={drSetup}
+              alt="Oracle Data Guard DR Architecture — Primary, Local HA, COLO2, Far Sync"
+              className="w-full h-auto"
+              priority
+            />
+          </div>
+
+          {/* Architecture diagram */}
+          <div className="my-6 rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800">
+            <Image
+              src={drSetup}
+              alt="Oracle Data Guard DR Architecture — Primary, Local HA, COLO2, Far Sync"
+              className="w-full h-auto"
+              priority
+            />
+          </div>
 
           {/* Architecture */}
           <Section title="Architecture Overview">
