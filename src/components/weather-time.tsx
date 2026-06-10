@@ -32,7 +32,6 @@ export default function WeatherTime() {
   useEffect(() => {
     if (!navigator.geolocation) return;
     setWeather({ status: "loading" });
-
     navigator.geolocation.getCurrentPosition(
       async ({ coords }) => {
         const { latitude: lat, longitude: lon } = coords;
@@ -55,17 +54,34 @@ export default function WeatherTime() {
   if (!time) return null;
 
   return (
-    <div className="fixed top-4 right-4 z-50 hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/90 dark:bg-zinc-900/90 border border-zinc-200 dark:border-zinc-800 backdrop-blur-sm shadow-sm text-xs font-mono text-zinc-500 dark:text-zinc-400 select-none">
-      {weather.status === "ok" && (
-        <span className="flex items-center gap-1">
-          {weather.icon}
-          <span>{weather.tempC}°C</span>
-          <span className="text-zinc-300 dark:text-zinc-600">/</span>
-          <span>{weather.tempF}°F</span>
-          <span className="text-zinc-300 dark:text-zinc-600 mx-0.5">·</span>
+    <>
+      {/* Mobile — top left, compact (no °F, no seconds) */}
+      <div className="md:hidden fixed top-4 left-4 z-50 flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white/90 dark:bg-zinc-900/90 border border-zinc-200 dark:border-zinc-800 backdrop-blur-sm shadow-sm text-xs font-mono text-zinc-500 dark:text-zinc-400 select-none">
+        {weather.status === "ok" && (
+          <span className="flex items-center gap-1">
+            {weather.icon}
+            <span>{weather.tempC}°C</span>
+            <span className="text-zinc-300 dark:text-zinc-600">·</span>
+          </span>
+        )}
+        <span className="tabular-nums">
+          {new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
         </span>
-      )}
-      <span className="tabular-nums">{time}</span>
-    </div>
+      </div>
+
+      {/* Desktop — top right, full */}
+      <div className="hidden md:flex fixed top-4 right-4 z-50 items-center gap-2 px-3 py-1.5 rounded-full bg-white/90 dark:bg-zinc-900/90 border border-zinc-200 dark:border-zinc-800 backdrop-blur-sm shadow-sm text-xs font-mono text-zinc-500 dark:text-zinc-400 select-none">
+        {weather.status === "ok" && (
+          <span className="flex items-center gap-1">
+            {weather.icon}
+            <span>{weather.tempC}°C</span>
+            <span className="text-zinc-300 dark:text-zinc-600">/</span>
+            <span>{weather.tempF}°F</span>
+            <span className="text-zinc-300 dark:text-zinc-600 mx-0.5">·</span>
+          </span>
+        )}
+        <span className="tabular-nums">{time}</span>
+      </div>
+    </>
   );
 }
