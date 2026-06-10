@@ -9,6 +9,15 @@ export type OwnPost = {
 
 export const ownPosts: OwnPost[] = [
   {
+    slug: "google-oauth-nextjs",
+    title: "Google OAuth in Next.js — And the Build-Time Env Var Trap That Causes 401",
+    date: "2026-06-10",
+    category: "Cloud",
+    readTime: "8 min read",
+    excerpt:
+      "How to implement Google Sign-In in a Next.js app — covering frontend setup, backend token verification, Prisma schema changes, and the build-time env var pitfalls that cause Error 401: invalid_client.",
+  },
+  {
     slug: "github-branch-protection-free",
     title: "GitHub Branch Protection on Private Repos — Without Paying for Team Plan",
     date: "2026-06-03",
