@@ -1,4 +1,5 @@
 import Footer from "@/components/footer";
+import WeatherTime from "@/components/weather-time";
 import { projects, portfolio } from "@/data/portfolio";
 import { getPosts, formatDate, stripHtml } from "@/lib/wordpress";
 import Link from "next/link";
@@ -66,6 +67,8 @@ export default async function Home() {
             </a>
           ))}
         </div>
+
+        <WeatherTime />
       </section>
 
       {/* Featured Projects */}

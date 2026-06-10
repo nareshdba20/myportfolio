@@ -8,14 +8,6 @@ export default function Footer() {
           <span className="text-zinc-500 dark:text-zinc-600">:~$ </span>
           <span className="text-zinc-400 dark:text-zinc-500">built with Next.js + Tailwind + Framer Motion</span>
         </p>
-        <a
-          href="https://github.com/nareshdba20/myportfolio"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-zinc-500 dark:text-zinc-600 hover:text-zinc-700 dark:hover:text-zinc-400 transition-colors font-mono"
-        >
-          view source →
-        </a>
       </div>
     </footer>
   );
