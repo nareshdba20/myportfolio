@@ -3,10 +3,8 @@
 import { useEffect, useState } from "react";
 
 type WeatherState =
-  | { status: "idle" }
-  | { status: "loading" }
-  | { status: "error" }
-  | { status: "ok"; temp: number; icon: string; city: string };
+  | { status: "idle" | "loading" | "error" }
+  | { status: "ok"; tempF: number; tempC: number; icon: string };
 
 function weatherIcon(code: number): string {
   if (code === 0) return "☀️";
@@ -24,11 +22,8 @@ export default function WeatherTime() {
   const [weather, setWeather] = useState<WeatherState>({ status: "idle" });
 
   useEffect(() => {
-    const tick = () => {
-      setTime(
-        new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })
-      );
-    };
+    const tick = () =>
+      setTime(new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" }));
     tick();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
@@ -42,28 +37,13 @@ export default function WeatherTime() {
       async ({ coords }) => {
         const { latitude: lat, longitude: lon } = coords;
         try {
-          const [weatherRes, geoRes] = await Promise.all([
-            fetch(
-              `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&temperature_unit=fahrenheit`
-            ),
-            fetch(
-              `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`
-            ),
-          ]);
-
-          const weatherData = await weatherRes.json();
-          const geoData = await geoRes.json();
-
-          const temp = Math.round(weatherData.current.temperature_2m);
-          const code = weatherData.current.weather_code;
-          const city =
-            geoData.address?.city ||
-            geoData.address?.town ||
-            geoData.address?.county ||
-            geoData.address?.state ||
-            "Your location";
-
-          setWeather({ status: "ok", temp, icon: weatherIcon(code), city });
+          const res = await fetch(
+            `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&temperature_unit=celsius`
+          );
+          const data = await res.json();
+          const tempC = Math.round(data.current.temperature_2m);
+          const tempF = Math.round((tempC * 9) / 5 + 32);
+          setWeather({ status: "ok", tempC, tempF, icon: weatherIcon(data.current.weather_code) });
         } catch {
           setWeather({ status: "error" });
         }
@@ -75,16 +55,17 @@ export default function WeatherTime() {
   if (!time) return null;
 
   return (
-    <div className="flex items-center gap-3 text-xs text-zinc-400 dark:text-zinc-500 font-mono mt-6">
-      <span className="tabular-nums">{time}</span>
-      {weather.status === "loading" && (
-        <span className="text-zinc-300 dark:text-zinc-600">· loading weather…</span>
-      )}
+    <div className="fixed top-4 right-4 z-50 hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/90 dark:bg-zinc-900/90 border border-zinc-200 dark:border-zinc-800 backdrop-blur-sm shadow-sm text-xs font-mono text-zinc-500 dark:text-zinc-400 select-none">
       {weather.status === "ok" && (
-        <span>
-          · {weather.icon} {weather.temp}°F · {weather.city}
+        <span className="flex items-center gap-1">
+          {weather.icon}
+          <span>{weather.tempC}°C</span>
+          <span className="text-zinc-300 dark:text-zinc-600">/</span>
+          <span>{weather.tempF}°F</span>
+          <span className="text-zinc-300 dark:text-zinc-600 mx-0.5">·</span>
         </span>
       )}
+      <span className="tabular-nums">{time}</span>
     </div>
   );
 }

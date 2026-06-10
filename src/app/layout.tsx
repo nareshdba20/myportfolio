@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import Nav from "@/components/nav";
+import WeatherTime from "@/components/weather-time";
 
 export const metadata: Metadata = {
   title: "Naresh Gowda — Engineer & Builder",
@@ -21,6 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <Nav />
+          <WeatherTime />
           {/* ml-16 on desktop offsets the fixed sidebar; pb-16 on mobile offsets the fixed bottom nav */}
           <div className="md:ml-16 pb-16 md:pb-0 min-h-screen">
             {children}
