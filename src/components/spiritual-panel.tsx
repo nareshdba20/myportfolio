@@ -24,7 +24,7 @@ export default function SpiritualPanel({
   deviVerse: DeviVerse;
 }) {
   return (
-    <div className="hidden lg:flex flex-col gap-5 w-full max-w-xs xl:max-w-sm shrink-0">
+    <div className="flex flex-col gap-5 w-full lg:max-w-xs xl:max-w-sm lg:shrink-0">
 
       {/* Bhagavad Gita — live API, daily verse */}
       <div className="relative rounded-2xl border border-orange-200/70 dark:border-orange-900/50 bg-gradient-to-br from-orange-50 via-amber-50/80 to-yellow-50/50 dark:from-zinc-900 dark:via-orange-950/20 dark:to-zinc-900 p-5 overflow-hidden shadow-sm">

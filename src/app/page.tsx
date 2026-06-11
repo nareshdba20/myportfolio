@@ -50,7 +50,7 @@ export default async function Home() {
 
       {/* Hero */}
       <section className="min-h-screen flex items-center px-5 sm:px-8 md:px-12 py-20">
-        <div className="w-full flex items-center gap-12 xl:gap-20">
+        <div className="w-full flex flex-col lg:flex-row lg:items-center gap-10 lg:gap-12 xl:gap-20">
 
           {/* Left — main content */}
           <div className="flex flex-col flex-1 min-w-0 max-w-xl">
