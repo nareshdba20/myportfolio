@@ -1,72 +1,118 @@
 import Footer from "@/components/footer";
+import SpiritualPanel from "@/components/spiritual-panel";
 import { projects, portfolio } from "@/data/portfolio";
 import { getPosts, formatDate, stripHtml } from "@/lib/wordpress";
+import deviData from "@/data/devi-mahatmya.json";
 import Link from "next/link";
 import { ArrowUpRight, Github, Linkedin, BookOpen, Mail } from "lucide-react";
 
+const CHAPTER_VERSES = [47, 72, 43, 42, 29, 47, 30, 28, 34, 42, 55, 20, 34, 27, 20, 24, 28, 78];
+
+async function fetchDailyGitaVerse() {
+  const dayOfEpoch = Math.floor(Date.now() / 86400000);
+  let remaining = dayOfEpoch % 700;
+  let chapter = 1, verse = 1;
+  for (let ch = 0; ch < CHAPTER_VERSES.length; ch++) {
+    if (remaining < CHAPTER_VERSES[ch]) { chapter = ch + 1; verse = remaining + 1; break; }
+    remaining -= CHAPTER_VERSES[ch];
+  }
+  try {
+    const res = await fetch(`https://vedicscriptures.github.io/slok/${chapter}/${verse}/`, {
+      next: { revalidate: 86400 },
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return {
+      chapter,
+      verse,
+      slok: (data.slok as string) || "",
+      transliteration: (data.transliteration as string) || "",
+      meaning: (data.purohit?.et || data.siva?.et || data.tej?.et || "") as string,
+    };
+  } catch {
+    return null;
+  }
+}
+
+function getDailyDeviVerse() {
+  const dayOfEpoch = Math.floor(Date.now() / 86400000);
+  const idx = dayOfEpoch % deviData.length;
+  return deviData[idx];
+}
+
 export default async function Home() {
   const featured = projects.filter((p) => p.featured).slice(0, 3);
-  const posts = await getPosts({ per_page: 3 });
+  const deviVerse = getDailyDeviVerse();
+  const [posts, gitaVerse] = await Promise.all([getPosts({ per_page: 3 }), fetchDailyGitaVerse()]);
 
   return (
     <main className="min-h-screen">
 
       {/* Hero */}
-      <section className="min-h-screen flex flex-col justify-center px-5 sm:px-8 md:px-12 py-20 max-w-3xl">
-        <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-4">
-          Hi, I&apos;m{" "}
-          <span className="text-violet-600 dark:text-violet-400 font-semibold">Naresh Gowda</span>
-        </p>
+      <section className="min-h-screen flex items-center px-5 sm:px-8 md:px-12 py-20">
+        <div className="w-full flex items-center gap-12 xl:gap-20">
 
-        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-zinc-900 dark:text-white leading-[1.1] mb-2">
-          I build{" "}
-          <span className="text-blue-500 dark:text-blue-400">databases</span> and
-        </h1>
-        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-emerald-500 dark:text-emerald-400 leading-[1.1] mb-8">
-          cloud infra
-        </h1>
+          {/* Left — main content */}
+          <div className="flex flex-col flex-1 min-w-0 max-w-xl">
+            <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-4">
+              Hi, I&apos;m{" "}
+              <span className="text-violet-600 dark:text-violet-400 font-semibold">Naresh Gowda</span>
+            </p>
 
-        <p className="flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400 mb-8">
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-          Database & DevOps Engineer ·{" "}
-          <span className="text-zinc-700 dark:text-zinc-300 font-medium">Evozn Inc</span>
-        </p>
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-zinc-900 dark:text-white leading-[1.1] mb-2">
+              I build{" "}
+              <span className="text-blue-500 dark:text-blue-400">databases</span> and
+            </h1>
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-emerald-500 dark:text-emerald-400 leading-[1.1] mb-8">
+              cloud infra
+            </h1>
 
-        <div className="max-w-xl space-y-3 text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed mb-10">
-          <p>
-            Software Engineer with <span className="text-zinc-900 dark:text-white font-medium">7+ years</span> of experience
-            delivering enterprise-scale systems, cloud migrations, and AI-enabled platforms.
-            I care about reliability, performance, and clean systems that people can trust.
-          </p>
-          <p>
-            Currently at{" "}
-            <span className="text-zinc-900 dark:text-white font-semibold">Evozn Inc</span>{" "}
-            building CI/CD pipelines, cloud databases on{" "}
-            <span className="text-zinc-900 dark:text-white font-medium">AWS</span>, and production-grade platforms.
-            I document everything on my{" "}
-            <a href={portfolio.blog} target="_blank" rel="noopener noreferrer"
-              className="text-violet-600 dark:text-violet-400 hover:underline underline-offset-4">
-              blog
-            </a>.
-          </p>
+            <p className="flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400 mb-8">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+              Database & DevOps Engineer ·{" "}
+              <span className="text-zinc-700 dark:text-zinc-300 font-medium">Evozn Inc</span>
+            </p>
+
+            <div className="space-y-3 text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed mb-10">
+              <p>
+                Software Engineer with <span className="text-zinc-900 dark:text-white font-medium">7+ years</span> of experience
+                delivering enterprise-scale systems, cloud migrations, and AI-enabled platforms.
+                I care about reliability, performance, and clean systems that people can trust.
+              </p>
+              <p>
+                Currently at{" "}
+                <span className="text-zinc-900 dark:text-white font-semibold">Evozn Inc</span>{" "}
+                building CI/CD pipelines, cloud databases on{" "}
+                <span className="text-zinc-900 dark:text-white font-medium">AWS</span>, and production-grade platforms.
+                I document everything on my{" "}
+                <a href={portfolio.blog} target="_blank" rel="noopener noreferrer"
+                  className="text-violet-600 dark:text-violet-400 hover:underline underline-offset-4">
+                  blog
+                </a>.
+              </p>
+            </div>
+
+            {/* Social links */}
+            <div className="flex items-center gap-5">
+              {[
+                { href: portfolio.github,   icon: Github,   label: "GitHub"   },
+                { href: portfolio.linkedin, icon: Linkedin, label: "LinkedIn" },
+                { href: portfolio.blog,     icon: BookOpen, label: "Blog"     },
+                { href: `mailto:${portfolio.email}`, icon: Mail, label: "Email" },
+              ].map(({ href, icon: Icon, label }) => (
+                <a key={label} href={href} target={href.startsWith("mailto") ? undefined : "_blank"}
+                  rel="noopener noreferrer" aria-label={label}
+                  className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors">
+                  <Icon size={22} />
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Right — spiritual panel (hidden on mobile/tablet, visible lg+) */}
+          <SpiritualPanel gitaVerse={gitaVerse} deviVerse={deviVerse} />
+
         </div>
-
-        {/* Social links */}
-        <div className="flex items-center gap-5">
-          {[
-            { href: portfolio.github,   icon: Github,   label: "GitHub"   },
-            { href: portfolio.linkedin, icon: Linkedin, label: "LinkedIn" },
-            { href: portfolio.blog,     icon: BookOpen, label: "Blog"     },
-            { href: `mailto:${portfolio.email}`, icon: Mail, label: "Email" },
-          ].map(({ href, icon: Icon, label }) => (
-            <a key={label} href={href} target={href.startsWith("mailto") ? undefined : "_blank"}
-              rel="noopener noreferrer" aria-label={label}
-              className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors">
-              <Icon size={22} />
-            </a>
-          ))}
-        </div>
-
       </section>
 
       {/* Featured Projects */}
