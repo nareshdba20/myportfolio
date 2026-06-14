@@ -63,10 +63,7 @@ export default async function Home() {
       <section className="min-h-screen flex items-center px-5 sm:px-8 md:px-12 py-20">
         <div className="w-full flex flex-col lg:flex-row lg:items-center gap-10 lg:gap-12 xl:gap-20">
 
-          {/* Left — spiritual panel */}
-          <SpiritualPanel gitaVerse={gitaVerse} deviVerse={deviVerse} />
-
-          {/* Right — main content */}
+          {/* Left — main content */}
           <div className="flex flex-col flex-1 min-w-0 max-w-xl">
             <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-4">
               Hi, I&apos;m{" "}
@@ -123,6 +120,8 @@ export default async function Home() {
             </div>
           </div>
 
+          {/* Right — spiritual panel */}
+          <SpiritualPanel gitaVerse={gitaVerse} deviVerse={deviVerse} />
 
         </div>
       </section>
