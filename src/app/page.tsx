@@ -63,8 +63,8 @@ export default async function Home() {
       <section className="min-h-screen flex items-center px-5 sm:px-8 md:px-12 py-20">
         <div className="w-full flex flex-col lg:flex-row lg:items-center gap-10 lg:gap-12 xl:gap-20">
 
-          {/* Left — main content */}
-          <div className="flex flex-col flex-1 min-w-0 max-w-xl">
+          {/* Left on desktop, bottom on mobile */}
+          <div className="order-2 lg:order-1 flex flex-col flex-1 min-w-0 max-w-xl">
             <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-4">
               Hi, I&apos;m{" "}
               <span className="text-violet-600 dark:text-violet-400 font-semibold">Naresh Gowda</span>
@@ -120,8 +120,10 @@ export default async function Home() {
             </div>
           </div>
 
-          {/* Right — spiritual panel */}
-          <SpiritualPanel gitaVerse={gitaVerse} deviVerse={deviVerse} />
+          {/* Right on desktop, top on mobile */}
+          <div className="order-1 lg:order-2">
+            <SpiritualPanel gitaVerse={gitaVerse} deviVerse={deviVerse} />
+          </div>
 
         </div>
       </section>
