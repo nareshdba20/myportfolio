@@ -2,7 +2,8 @@ import Footer from "@/components/footer";
 import SpiritualPanel from "@/components/spiritual-panel";
 import { projects, portfolio } from "@/data/portfolio";
 import { getPosts, formatDate, stripHtml } from "@/lib/wordpress";
-import deviData from "@/data/devi-mahatmya.json";
+import fs from "fs";
+import path from "path";
 import Link from "next/link";
 import { ArrowUpRight, Github, Linkedin, BookOpen, Mail } from "lucide-react";
 
@@ -35,9 +36,19 @@ async function fetchDailyGitaVerse() {
 }
 
 function getDailyDeviVerse() {
-  const dayOfEpoch = Math.floor(Date.now() / 86400000);
-  const idx = dayOfEpoch % deviData.length;
-  return deviData[idx];
+  try {
+    const filePath = path.join(process.cwd(), "src", "data", "devi-mahatmya.json");
+    const raw = fs.readFileSync(filePath, "utf-8");
+    const data = JSON.parse(raw);
+    if (!Array.isArray(data) || data.length === 0) return null;
+    const verses = data.filter((v: { sanskrit: string }) => v.sanskrit.trim().length > 30);
+    if (verses.length === 0) return null;
+    const dayOfEpoch = Math.floor(Date.now() / 86400000);
+    const idx = dayOfEpoch % verses.length;
+    return verses[idx] ?? null;
+  } catch {
+    return null;
+  }
 }
 
 export default async function Home() {
@@ -52,7 +63,10 @@ export default async function Home() {
       <section className="min-h-screen flex items-center px-5 sm:px-8 md:px-12 py-20">
         <div className="w-full flex flex-col lg:flex-row lg:items-center gap-10 lg:gap-12 xl:gap-20">
 
-          {/* Left — main content */}
+          {/* Left — spiritual panel */}
+          <SpiritualPanel gitaVerse={gitaVerse} deviVerse={deviVerse} />
+
+          {/* Right — main content */}
           <div className="flex flex-col flex-1 min-w-0 max-w-xl">
             <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-4">
               Hi, I&apos;m{" "}
@@ -109,8 +123,6 @@ export default async function Home() {
             </div>
           </div>
 
-          {/* Right — spiritual panel (hidden on mobile/tablet, visible lg+) */}
-          <SpiritualPanel gitaVerse={gitaVerse} deviVerse={deviVerse} />
 
         </div>
       </section>

@@ -14,7 +14,7 @@ type DeviVerse = {
   chapter_name: string;
   sanskrit: string;
   transliteration: string;
-};
+} | null;
 
 export default function SpiritualPanel({
   gitaVerse,
@@ -77,24 +77,28 @@ export default function SpiritualPanel({
           </span>
         </div>
 
-        <div className="space-y-3">
-          <p className="text-zinc-700 dark:text-zinc-200 text-sm leading-relaxed whitespace-pre-line font-serif">
-            {deviVerse.sanskrit}
-          </p>
-          {deviVerse.transliteration && (
-            <p className="text-[11px] text-zinc-400 dark:text-zinc-500 leading-relaxed italic line-clamp-2">
-              {deviVerse.transliteration}
+        {deviVerse ? (
+          <div className="space-y-3">
+            <p className="text-zinc-700 dark:text-zinc-200 text-sm leading-relaxed whitespace-pre-line font-serif">
+              {deviVerse.sanskrit}
             </p>
-          )}
-          <div className="flex items-center justify-between pt-1">
-            <span className="text-[10px] font-mono text-rose-500 dark:text-rose-400">
-              Ch. {deviVerse.chapter} · Verse {deviVerse.verse}
-            </span>
-            <span className="text-[10px] px-2 py-0.5 rounded-full bg-rose-100 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400 border border-rose-200/80 dark:border-rose-900/50 font-medium line-clamp-1 max-w-[120px] text-right">
-              {deviVerse.chapter_name}
-            </span>
+            {deviVerse.transliteration && (
+              <p className="text-[11px] text-zinc-400 dark:text-zinc-500 leading-relaxed italic line-clamp-2">
+                {deviVerse.transliteration}
+              </p>
+            )}
+            <div className="flex items-center justify-between pt-1">
+              <span className="text-[10px] font-mono text-rose-500 dark:text-rose-400">
+                Ch. {deviVerse.chapter} · Verse {deviVerse.verse}
+              </span>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-rose-100 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400 border border-rose-200/80 dark:border-rose-900/50 font-medium line-clamp-1 max-w-[120px] text-right">
+                {deviVerse.chapter_name}
+              </span>
+            </div>
           </div>
-        </div>
+        ) : (
+          <p className="text-xs text-zinc-400 dark:text-zinc-600 italic">Could not load today&apos;s verse.</p>
+        )}
       </div>
 
     </div>
