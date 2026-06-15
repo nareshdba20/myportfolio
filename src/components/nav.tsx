@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
-import { Moon, Sun, Home, User, BookOpen, FolderOpen, FileText } from "lucide-react";
+import { Moon, Sun, Home, User, BookOpen, FolderOpen, FileText, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -13,6 +13,7 @@ const links = [
   { href: "/blog",     icon: BookOpen,   label: "Blog"     },
   { href: "/projects", icon: FolderOpen, label: "Projects" },
   { href: "/resume",   icon: FileText,   label: "Resume"   },
+  { href: "/spiritual", icon: Sparkles,  label: "Spiritual" },
 ];
 
 export default function Nav() {
