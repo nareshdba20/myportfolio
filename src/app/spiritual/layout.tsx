@@ -1,6 +1,8 @@
 "use client";
 import { useEffect } from "react";
 import { LanguageProvider } from "@/contexts/language-context";
+import SpiritualSettingsPanel from "@/components/spiritual-settings-panel";
+import SpiritualSettingsToggle from "@/components/spiritual-settings-toggle";
 
 export default function SpiritualLayout({ children }: { children: React.ReactNode }) {
   useEffect(() => {
@@ -18,10 +20,12 @@ export default function SpiritualLayout({ children }: { children: React.ReactNod
           zIndex: 60,
           overflowY: "scroll",
           WebkitOverflowScrolling: "touch" as never,
-          background: "#0B0714",
+          background: "#FEF9EC",
         }}
       >
         {children}
+        <SpiritualSettingsToggle />
+        <SpiritualSettingsPanel />
       </div>
     </LanguageProvider>
   );

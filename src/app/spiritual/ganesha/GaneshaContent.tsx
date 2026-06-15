@@ -1,11 +1,9 @@
 "use client";
 import Link from "next/link";
-import { useLang, type Lang } from "@/contexts/language-context";
-import LanguagePicker from "@/components/language-picker";
+import { useLang, type Lang, type FontSize } from "@/contexts/language-context";
 import ChantButton from "@/components/chant-button";
 
 // ── Fonts ─────────────────────────────────────────────────────────────────────
-
 const SA = "'Noto Serif Devanagari', serif";
 
 const PROSE_FONT: Record<Lang, string> = {
@@ -20,8 +18,12 @@ const SPEECH_LANG: Record<Lang, string> = {
   kn: "kn-IN", hi: "hi-IN", te: "te-IN", ta: "ta-IN", ml: "ml-IN",
 };
 
-// ── Shloka lines (script renderings — language-independent) ───────────────────
+// ── Font scale ─────────────────────────────────────────────────────────────────
+const SCRIPT_SIZE: Record<FontSize, string> = { small: "1.25rem", regular: "1.55rem", large: "2.0rem" };
+const DEVA_SIZE:   Record<FontSize, string> = { small: "0.95rem", regular: "1.1rem",  large: "1.4rem"  };
+const ROMAN_SIZE:  Record<FontSize, string> = { small: "0.72rem", regular: "0.82rem", large: "0.96rem" };
 
+// ── Shloka lines ──────────────────────────────────────────────────────────────
 const LINES = [
   {
     kannada:    "ಅಗಜಾನನ ಪದ್ಮಾರ್ಕಂ ಗಜಾನನಮ್ ಅಹರ್ನಿಶಮ್ ।",
@@ -47,7 +49,6 @@ const WORD_SCRIPTS = [
 ];
 
 // ── Translatable content ──────────────────────────────────────────────────────
-
 interface WordDetail  { breakdown: string; meaning: string }
 interface SigItem     { title: string; body: string }
 interface LangContent {
@@ -133,53 +134,49 @@ const CONTENT: Record<"kn" | "hi", LangContent> = {
   },
 };
 
-// Coming-soon messages per language
 const COMING_SOON: Partial<Record<Lang, string>> = {
   te: "ఈ భాషలో అనువాదం త్వరలో వస్తుంది",
   ta: "இந்த மொழியில் மொழிபெயர்ப்பு விரைவில் வரும்",
   ml: "ഈ ഭാഷയിൽ വിവർത്തനം ഉടൻ വരും",
 };
 
-// ── UI labels ─────────────────────────────────────────────────────────────────
-
 interface Labels {
   wordSection: string; sigSection: string; chantSection: string; benefitSection: string;
-  devanagariLabel: string; pronunciationLabel: string; translationLabel: string;
+  scriptLabel: string; translitLabel: string; translationLabel: string;
   backLink: string; chantBtn: string; stopBtn: string;
 }
 
 const LABELS: Record<Lang, Labels> = {
-  kn: { wordSection: "ಪದ-ಪರಿಚಯ", sigSection: "ಮಹತ್ವ", chantSection: "ಜಪ ವಿಧಿ", benefitSection: "ಫಲ", devanagariLabel: "ದೇವನಾಗರಿ ಲಿಪಿ", pronunciationLabel: "ಉಚ್ಚಾರಣೆ", translationLabel: "ಅನುವಾದ", backLink: "← ಅಧ್ಯಾತ್ಮ", chantBtn: "ಪಠಿಸು", stopBtn: "ನಿಲ್ಲಿಸು" },
-  hi: { wordSection: "पद-परिचय", sigSection: "महत्त्व", chantSection: "जप-विधि", benefitSection: "फल", devanagariLabel: "देवनागरी लिपि", pronunciationLabel: "उच्चारण", translationLabel: "अनुवाद", backLink: "← आध्यात्म", chantBtn: "पाठ करें", stopBtn: "रोकें" },
-  te: { wordSection: "పద పరిచయం", sigSection: "మహత్వం", chantSection: "జప విధి", benefitSection: "ఫలం", devanagariLabel: "దేవనాగరి లిపి", pronunciationLabel: "ఉచ్చారణ", translationLabel: "అనువాదం", backLink: "← ఆధ్యాత్మికం", chantBtn: "పఠించు", stopBtn: "ఆపు" },
-  ta: { wordSection: "பத விளக்கம்", sigSection: "முக்கியத்துவம்", chantSection: "ஜப முறை", benefitSection: "பலன்", devanagariLabel: "தேவநாகரி எழுத்து", pronunciationLabel: "உச்சரிப்பு", translationLabel: "மொழிபெயர்ப்பு", backLink: "← ஆன்மீகம்", chantBtn: "பாடு", stopBtn: "நிறுத்து" },
-  ml: { wordSection: "പദ പരിചയം", sigSection: "മഹത്ത്വം", chantSection: "ജപ വിധി", benefitSection: "ഫലം", devanagariLabel: "ദേവനാഗരി ലിപി", pronunciationLabel: "ഉച്ചാരണം", translationLabel: "വിവർത്തനം", backLink: "← ആദ്ധ്യാത്മികം", chantBtn: "ചൊല്ലുക", stopBtn: "നിർത്തുക" },
+  kn: { wordSection: "ಪದ-ಪರಿಚಯ", sigSection: "ಮಹತ್ವ", chantSection: "ಜಪ ವಿಧಿ", benefitSection: "ಫಲ", scriptLabel: "ಕನ್ನಡ", translitLabel: "ಉಚ್ಚಾರಣೆ", translationLabel: "ಅನುವಾದ", backLink: "← ಅಧ್ಯಾತ್ಮ", chantBtn: "ಪಠಿಸು", stopBtn: "ನಿಲ್ಲಿಸು" },
+  hi: { wordSection: "पद-परिचय", sigSection: "महत्त्व", chantSection: "जप-विधि", benefitSection: "फल", scriptLabel: "देवनागरी", translitLabel: "उच्चारण", translationLabel: "अनुवाद", backLink: "← आध्यात्म", chantBtn: "पाठ करें", stopBtn: "रोकें" },
+  te: { wordSection: "పద పరిచయం", sigSection: "మహత్వం", chantSection: "జప విధి", benefitSection: "ఫలం", scriptLabel: "లిపి", translitLabel: "ఉచ్చారణ", translationLabel: "అనువాదం", backLink: "← ఆధ్యాత్మికం", chantBtn: "పఠించు", stopBtn: "ఆపు" },
+  ta: { wordSection: "பத விளக்கம்", sigSection: "முக்கியத்துவம்", chantSection: "ஜப முறை", benefitSection: "பலன்", scriptLabel: "எழுத்து", translitLabel: "உச்சரிப்பு", translationLabel: "மொழிபெயர்ப்பு", backLink: "← ஆன்மீகம்", chantBtn: "பாடு", stopBtn: "நிறுத்து" },
+  ml: { wordSection: "പദ പരിചയം", sigSection: "മഹത്ത്വം", chantSection: "ജപ വിധി", benefitSection: "ഫലം", scriptLabel: "ലിപി", translitLabel: "ഉച്ചാരണം", translationLabel: "വിവർത്തനം", backLink: "← ആദ്ധ്യാത്മികം", chantBtn: "ചൊല്ലുക", stopBtn: "നിർത്തുക" },
 };
 
 // ── Sub-components ────────────────────────────────────────────────────────────
-
 function LotusMandala() {
   const C = 200;
   return (
     <svg viewBox="0 0 400 400" aria-hidden className="w-full h-full">
-      <circle cx={C} cy={C} r="188" fill="none" stroke="#D4AF37" strokeWidth="0.5" opacity="0.35" />
-      <circle cx={C} cy={C} r="182" fill="none" stroke="#D4AF37" strokeWidth="0.3" opacity="0.20" />
+      <circle cx={C} cy={C} r="188" fill="none" stroke="#8B6914" strokeWidth="0.5" opacity="0.30" />
+      <circle cx={C} cy={C} r="182" fill="none" stroke="#8B6914" strokeWidth="0.3" opacity="0.18" />
       {Array.from({ length: 16 }).map((_, i) => {
         const a = (i / 16) * Math.PI * 2;
         const px = C + Math.cos(a) * 118, py = C + Math.sin(a) * 118;
-        return <ellipse key={`op${i}`} cx={px} cy={py} rx="14" ry="38" transform={`rotate(${(a*180/Math.PI)+90} ${px} ${py})`} fill="none" stroke="#D4AF37" strokeWidth="0.6" opacity="0.45" />;
+        return <ellipse key={`op${i}`} cx={px} cy={py} rx="14" ry="38" transform={`rotate(${(a * 180 / Math.PI) + 90} ${px} ${py})`} fill="none" stroke="#8B6914" strokeWidth="0.6" opacity="0.38" />;
       })}
       {Array.from({ length: 8 }).map((_, i) => {
         const a = (i / 8) * Math.PI * 2 + Math.PI / 8;
         const px = C + Math.cos(a) * 62, py = C + Math.sin(a) * 62;
-        return <ellipse key={`ip${i}`} cx={px} cy={py} rx="11" ry="32" transform={`rotate(${(a*180/Math.PI)+90} ${px} ${py})`} fill="none" stroke="#FF9933" strokeWidth="0.55" opacity="0.40" />;
+        return <ellipse key={`ip${i}`} cx={px} cy={py} rx="11" ry="32" transform={`rotate(${(a * 180 / Math.PI) + 90} ${px} ${py})`} fill="none" stroke="#C65C00" strokeWidth="0.55" opacity="0.32" />;
       })}
-      <circle cx={C} cy={C} r="32" fill="none" stroke="#D4AF37" strokeWidth="0.7" opacity="0.45" />
-      <circle cx={C} cy={C} r="22" fill="none" stroke="#FF9933" strokeWidth="0.5" opacity="0.35" />
-      <circle cx={C} cy={C} r="13" fill="none" stroke="#D4AF37" strokeWidth="0.5" opacity="0.40" />
+      <circle cx={C} cy={C} r="32" fill="none" stroke="#8B6914" strokeWidth="0.7" opacity="0.38" />
+      <circle cx={C} cy={C} r="22" fill="none" stroke="#C65C00" strokeWidth="0.5" opacity="0.28" />
+      <circle cx={C} cy={C} r="13" fill="none" stroke="#8B6914" strokeWidth="0.5" opacity="0.32" />
       {Array.from({ length: 16 }).map((_, i) => {
         const a = (i / 16) * Math.PI * 2;
-        return <line key={`sp${i}`} x1={C+Math.cos(a)*13} y1={C+Math.sin(a)*13} x2={C+Math.cos(a)*180} y2={C+Math.sin(a)*180} stroke="#D4AF37" strokeWidth="0.2" opacity="0.12" />;
+        return <line key={`sp${i}`} x1={C + Math.cos(a) * 13} y1={C + Math.sin(a) * 13} x2={C + Math.cos(a) * 180} y2={C + Math.sin(a) * 180} stroke="#8B6914" strokeWidth="0.2" opacity="0.10" />;
       })}
     </svg>
   );
@@ -188,61 +185,62 @@ function LotusMandala() {
 function Divider() {
   return (
     <div className="flex items-center gap-3 my-10">
-      <div className="flex-1 h-px" style={{ background: "linear-gradient(to right, transparent, rgba(212,175,55,0.22))" }} />
-      <span style={{ color: "#FF9933", opacity: 0.45 }}>✦</span>
-      <span style={{ fontFamily: SA, color: "#D4AF37", opacity: 0.28, fontSize: "0.9rem" }}>ॐ</span>
-      <span style={{ color: "#FF9933", opacity: 0.45 }}>✦</span>
-      <div className="flex-1 h-px" style={{ background: "linear-gradient(to left, transparent, rgba(212,175,55,0.22))" }} />
+      <div className="flex-1 h-px" style={{ background: "linear-gradient(to right, transparent, rgba(139,105,20,0.20))" }} />
+      <span style={{ color: "#C65C00", opacity: 0.50 }}>✦</span>
+      <span style={{ fontFamily: SA, color: "#8B6914", opacity: 0.32, fontSize: "0.9rem" }}>ॐ</span>
+      <span style={{ color: "#C65C00", opacity: 0.50 }}>✦</span>
+      <div className="flex-1 h-px" style={{ background: "linear-gradient(to left, transparent, rgba(139,105,20,0.20))" }} />
     </div>
   );
 }
 
 function SecLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-[9px] font-mono uppercase tracking-[0.28em] mb-4" style={{ color: "rgba(255,153,51,0.55)" }}>
+    <p className="text-[9px] font-mono uppercase tracking-[0.28em] mb-4" style={{ color: "rgba(198,92,0,0.65)" }}>
       {children}
     </p>
   );
 }
 
 // ── Main component ────────────────────────────────────────────────────────────
-
 export default function GaneshaContent() {
-  const { lang } = useLang();
-  const lbl = LABELS[lang];
-  const pf  = PROSE_FONT[lang];
-
-  // For te/ta/ml fall back to kn content but show coming-soon banner
+  const { lang, fields, fontSize } = useLang();
+  const lbl  = LABELS[lang];
+  const pf   = PROSE_FONT[lang];
   const contentLang: "kn" | "hi" = lang === "hi" ? "hi" : "kn";
-  const content = CONTENT[contentLang];
+  const content    = CONTENT[contentLang];
   const comingSoon = COMING_SOON[lang];
 
-  return (
-    <div className="relative min-h-screen" style={{ background: "linear-gradient(160deg,#0B0714 0%,#130B1A 45%,#0D0A10 100%)" }}>
+  const scriptSz = SCRIPT_SIZE[fontSize];
+  const devaSz   = DEVA_SIZE[fontSize];
+  const romanSz  = ROMAN_SIZE[fontSize];
 
-      {/* Ambient glows */}
+  return (
+    <div className="relative min-h-screen">
+
+      {/* Subtle warm top glow */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[720px] h-[520px] rounded-full" style={{ background: "radial-gradient(ellipse, rgba(255,153,51,0.11) 0%, transparent 65%)" }} />
-        <div className="absolute top-1/2 -right-32 w-[480px] h-[480px] rounded-full" style={{ background: "radial-gradient(ellipse, rgba(212,175,55,0.05) 0%, transparent 65%)" }} />
-        <div className="absolute bottom-0 -left-20 w-[400px] h-[400px] rounded-full" style={{ background: "radial-gradient(ellipse, rgba(255,153,51,0.05) 0%, transparent 65%)" }} />
+        <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-[700px] h-[500px] rounded-full"
+          style={{ background: "radial-gradient(ellipse, rgba(255,153,51,0.10) 0%, transparent 65%)" }} />
       </div>
 
       <div className="relative z-10 max-w-2xl mx-auto px-5 py-10 md:py-16">
 
-        {/* Top bar: back link + language picker */}
-        <div className="flex items-center justify-between mb-10">
-          <Link href="/spiritual"
-            className="text-[11px] font-mono transition-opacity opacity-35 hover:opacity-70"
-            style={{ color: "#D4AF37", fontFamily: pf }}>
+        {/* Top bar: back link only (settings button is fixed in layout) */}
+        <div className="flex items-center mb-10">
+          <Link
+            href="/spiritual"
+            className="text-[11px] font-mono transition-opacity opacity-40 hover:opacity-70"
+            style={{ color: "#8B6914", fontFamily: pf }}
+          >
             {lbl.backLink}
           </Link>
-          <LanguagePicker />
         </div>
 
-        {/* Coming-soon banner for te/ta/ml */}
+        {/* Coming-soon banner */}
         {comingSoon && (
           <div className="mb-6 rounded-xl px-4 py-3 text-center text-sm"
-            style={{ background: "rgba(255,153,51,0.06)", border: "1px solid rgba(255,153,51,0.18)", fontFamily: pf, color: "rgba(255,153,51,0.65)" }}>
+            style={{ background: "rgba(198,92,0,0.05)", border: "1px solid rgba(198,92,0,0.18)", fontFamily: pf, color: "rgba(198,92,0,0.75)" }}>
             {comingSoon}
           </div>
         )}
@@ -250,20 +248,27 @@ export default function GaneshaContent() {
         {/* ── HERO ── */}
         <div className="text-center mb-14">
           <div className="relative w-44 h-44 mx-auto mb-7 flex items-center justify-center">
-            <div className="absolute inset-0 rounded-full" style={{ background: "radial-gradient(circle, rgba(255,153,51,0.14) 0%, rgba(212,175,55,0.06) 45%, transparent 70%)" }} />
-            <div className="absolute rounded-full" style={{ inset: "6px",  border: "1px solid rgba(212,175,55,0.16)" }} />
-            <div className="absolute rounded-full" style={{ inset: "18px", border: "1px solid rgba(212,175,55,0.10)" }} />
-            <div className="absolute rounded-full" style={{ inset: "30px", border: "1px solid rgba(255,153,51,0.08)" }} />
-            <span style={{ fontFamily: SA, fontSize: "5.5rem", lineHeight: 1, background: "linear-gradient(160deg,#FF9933 0%,#D4AF37 50%,#FFF0A0 75%,#D4AF37 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", filter: "drop-shadow(0 0 28px rgba(212,175,55,0.40))", position: "relative", zIndex: 1 }}>
+            <div className="absolute inset-0 rounded-full"
+              style={{ background: "radial-gradient(circle, rgba(198,92,0,0.10) 0%, rgba(139,105,20,0.04) 45%, transparent 70%)" }} />
+            <div className="absolute rounded-full" style={{ inset: "6px",  border: "1px solid rgba(139,105,20,0.16)" }} />
+            <div className="absolute rounded-full" style={{ inset: "18px", border: "1px solid rgba(139,105,20,0.10)" }} />
+            <div className="absolute rounded-full" style={{ inset: "30px", border: "1px solid rgba(198,92,0,0.08)"  }} />
+            <span style={{
+              fontFamily: SA, fontSize: "5.5rem", lineHeight: 1,
+              background: "linear-gradient(160deg, #C65C00 0%, #8B6914 50%, #A07720 100%)",
+              WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+              filter: "drop-shadow(0 0 20px rgba(139,105,20,0.25))", position: "relative", zIndex: 1,
+            }}>
               ॐ
             </span>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-2"
-            style={{ fontFamily: "'Noto Serif Kannada', serif", color: "#D4AF37", textShadow: "0 0 40px rgba(212,175,55,0.25)" }}>
+            style={{ fontFamily: "'Noto Serif Kannada', serif", color: "#3B2000" }}>
             ಗಣೇಶ
           </h1>
-          <p className="text-xl mb-1" style={{ fontFamily: SA, color: "rgba(212,175,55,0.50)" }}>श्री गणेशाय नमः</p>
-          <p className="text-xs tracking-widest mt-3" style={{ fontFamily: "'Noto Serif Kannada', serif", color: "rgba(255,153,51,0.40)" }}>
+          <p className="text-xl mb-1" style={{ fontFamily: SA, color: "rgba(139,105,20,0.55)" }}>श्री गणेशाय नमः</p>
+          <p className="text-xs tracking-widest mt-3"
+            style={{ fontFamily: "'Noto Serif Kannada', serif", color: "rgba(198,92,0,0.55)" }}>
             ವಿಘ್ನಹರ್ತ · ಗಜಾನನ · ಏಕದಂತ · ಬುದ್ಧಿಪ್ರಿಯ
           </p>
         </div>
@@ -272,51 +277,56 @@ export default function GaneshaContent() {
 
         {/* ── SHLOKA CARD ── */}
         <div className="relative rounded-3xl overflow-hidden mb-8"
-          style={{ background: "rgba(212,175,55,0.035)", border: "1px solid rgba(212,175,55,0.14)", boxShadow: "0 0 80px rgba(255,153,51,0.05) inset" }}>
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{ opacity: 0.07 }}>
+          style={{ background: "rgba(139,105,20,0.04)", border: "1px solid rgba(139,105,20,0.14)", boxShadow: "0 2px 24px rgba(44,24,16,0.06)" }}>
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{ opacity: 0.06 }}>
             <div className="w-[380px] h-[380px]"><LotusMandala /></div>
           </div>
 
           <div className="relative z-10 p-7 md:p-10 text-center">
             <SecLabel>ಅಗಜಾನನ ಪದ್ಮಾರ್ಕಂ · {content.type}</SecLabel>
 
-            {/* Kannada script — primary */}
-            <div className="mb-6 space-y-3">
-              {LINES.map((line, i) => (
-                <p key={i} className="text-[1.55rem] md:text-[1.8rem] leading-loose"
-                  style={{ fontFamily: "'Noto Serif Kannada', serif", color: "#FFF8E7", textShadow: "0 0 32px rgba(212,175,55,0.18)" }}>
-                  {line.kannada}
+            {/* Script — Kannada */}
+            {fields.script && (
+              <div className="mb-5 space-y-3">
+                <p className="text-[9px] font-mono uppercase tracking-widest mb-3" style={{ color: "rgba(198,92,0,0.55)" }}>
+                  {lbl.scriptLabel}
                 </p>
-              ))}
-            </div>
+                {LINES.map((line, i) => (
+                  <p key={i} className="leading-loose"
+                    style={{ fontFamily: "'Noto Serif Kannada', serif", color: "#1C0F00", fontSize: scriptSz }}>
+                    {line.kannada}
+                  </p>
+                ))}
+                {/* Devanagari sub-box */}
+                <div className="rounded-xl px-4 py-3 mt-3 space-y-1.5"
+                  style={{ background: "rgba(139,105,20,0.05)", border: "1px solid rgba(139,105,20,0.10)" }}>
+                  {LINES.map((line, i) => (
+                    <p key={i} className="leading-loose"
+                      style={{ fontFamily: SA, color: "rgba(44,24,16,0.62)", fontSize: devaSz }}>
+                      {line.devanagari}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            )}
 
-            {/* Devanagari */}
-            <div className="rounded-xl px-5 py-3 mb-5 space-y-1.5"
-              style={{ background: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.055)" }}>
-              <p className="text-[9px] font-mono uppercase tracking-widest mb-2" style={{ color: "rgba(255,153,51,0.38)" }}>
-                {lbl.devanagariLabel}
-              </p>
-              {LINES.map((line, i) => (
-                <p key={i} className="text-lg leading-loose" style={{ fontFamily: SA, color: "rgba(255,248,230,0.50)" }}>
-                  {line.devanagari}
+            {/* Transliteration — Roman */}
+            {fields.transliteration && (
+              <div className="mb-6 space-y-1.5">
+                <p className="text-[9px] font-mono uppercase tracking-widest mb-2" style={{ color: "rgba(198,92,0,0.55)" }}>
+                  {lbl.translitLabel}
                 </p>
-              ))}
-            </div>
-
-            {/* Roman */}
-            <div className="mb-7 space-y-1.5">
-              <p className="text-[9px] font-mono uppercase tracking-widest mb-2" style={{ color: "rgba(255,153,51,0.38)" }}>
-                {lbl.pronunciationLabel}
-              </p>
-              {LINES.map((line, i) => (
-                <p key={i} className="text-sm italic leading-relaxed" style={{ color: "rgba(255,248,230,0.35)", letterSpacing: "0.03em" }}>
-                  {line.roman}
-                </p>
-              ))}
-            </div>
+                {LINES.map((line, i) => (
+                  <p key={i} className="italic leading-relaxed"
+                    style={{ color: "rgba(44,24,16,0.50)", letterSpacing: "0.03em", fontSize: romanSz }}>
+                    {line.roman}
+                  </p>
+                ))}
+              </div>
+            )}
 
             {/* Chant button */}
-            <div className="flex justify-center mb-7">
+            <div className="flex justify-center mb-6">
               <ChantButton
                 lines={LINES.map(l => l.kannada)}
                 chantLabel={lbl.chantBtn}
@@ -326,48 +336,58 @@ export default function GaneshaContent() {
             </div>
 
             {/* Translation */}
-            <div className="rounded-2xl px-5 py-4"
-              style={{ background: "rgba(255,153,51,0.05)", border: "1px solid rgba(255,153,51,0.12)" }}>
-              <p className="text-[9px] font-mono uppercase tracking-widest mb-2" style={{ color: "rgba(255,153,51,0.48)" }}>
-                {lbl.translationLabel}
-              </p>
-              <p className="text-sm leading-relaxed italic"
-                style={{ fontFamily: pf, color: "rgba(255,248,230,0.75)" }}>
-                "{content.translation}"
-              </p>
-            </div>
+            {fields.translation && (
+              <div className="rounded-2xl px-5 py-4 text-left"
+                style={{ background: "rgba(198,92,0,0.04)", border: "1px solid rgba(198,92,0,0.12)" }}>
+                <p className="text-[9px] font-mono uppercase tracking-widest mb-2" style={{ color: "rgba(198,92,0,0.58)" }}>
+                  {lbl.translationLabel}
+                </p>
+                <p className="text-sm leading-relaxed italic"
+                  style={{ fontFamily: pf, color: "rgba(44,24,16,0.80)" }}>
+                  "{content.translation}"
+                </p>
+              </div>
+            )}
           </div>
         </div>
 
         <Divider />
 
         {/* ── WORD BREAKDOWN ── */}
-        <div className="mb-8">
-          <SecLabel>{lbl.wordSection}</SecLabel>
-          <div className="grid grid-cols-1 gap-3">
-            {WORD_SCRIPTS.map((w, i) => (
-              <div key={i} className="rounded-xl p-4"
-                style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.055)" }}>
-                <div className="flex items-start gap-4">
-                  <span className="text-[10px] font-mono mt-1 shrink-0 w-4 text-right" style={{ color: "rgba(212,175,55,0.30)" }}>{i + 1}</span>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-baseline gap-3 flex-wrap mb-1">
-                      <span className="text-xl font-semibold" style={{ fontFamily: "'Noto Serif Kannada', serif", color: "#D4AF37" }}>{w.kannada}</span>
-                      <span className="text-base" style={{ fontFamily: SA, color: "rgba(212,175,55,0.40)" }}>{w.devanagari}</span>
-                      <span className="text-[11px] italic" style={{ color: "rgba(255,153,51,0.40)" }}>{w.roman}</span>
+        {fields.wordMeanings && (
+          <div className="mb-8">
+            <SecLabel>{lbl.wordSection}</SecLabel>
+            <div className="grid grid-cols-1 gap-3">
+              {WORD_SCRIPTS.map((w, i) => (
+                <div key={i} className="rounded-xl p-4"
+                  style={{ background: "rgba(0,0,0,0.02)", border: "1px solid rgba(139,105,20,0.10)" }}>
+                  <div className="flex items-start gap-4">
+                    <span className="text-[10px] font-mono mt-1 shrink-0 w-4 text-right"
+                      style={{ color: "rgba(139,105,20,0.35)" }}>{i + 1}</span>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-baseline gap-3 flex-wrap mb-1">
+                        <span className="text-xl font-semibold"
+                          style={{ fontFamily: "'Noto Serif Kannada', serif", color: "#5C3A00" }}>{w.kannada}</span>
+                        <span className="text-base"
+                          style={{ fontFamily: SA, color: "rgba(139,105,20,0.55)" }}>{w.devanagari}</span>
+                        <span className="text-[11px] italic"
+                          style={{ color: "rgba(198,92,0,0.55)" }}>{w.roman}</span>
+                      </div>
+                      <p className="text-[10px] font-mono mb-2"
+                        style={{ fontFamily: pf, color: "rgba(198,92,0,0.65)" }}>
+                        {content.words[i].breakdown}
+                      </p>
+                      <p className="text-sm leading-relaxed"
+                        style={{ fontFamily: pf, color: "rgba(44,24,16,0.70)" }}>
+                        {content.words[i].meaning}
+                      </p>
                     </div>
-                    <p className="text-[10px] font-mono mb-2" style={{ fontFamily: pf, color: "rgba(255,153,51,0.42)" }}>
-                      {content.words[i].breakdown}
-                    </p>
-                    <p className="text-sm leading-relaxed" style={{ fontFamily: pf, color: "rgba(255,248,230,0.58)" }}>
-                      {content.words[i].meaning}
-                    </p>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         <Divider />
 
@@ -377,9 +397,9 @@ export default function GaneshaContent() {
           <div className="space-y-4">
             {content.significance.map((item, i) => (
               <div key={i} className="rounded-xl p-4"
-                style={{ background: "rgba(255,153,51,0.035)", border: "1px solid rgba(255,153,51,0.09)", borderLeft: "3px solid rgba(255,153,51,0.38)" }}>
-                <p className="text-xs font-semibold mb-2" style={{ fontFamily: pf, color: "rgba(212,175,55,0.85)" }}>{item.title}</p>
-                <p className="text-sm leading-relaxed" style={{ fontFamily: pf, color: "rgba(255,248,230,0.56)" }}>{item.body}</p>
+                style={{ background: "rgba(198,92,0,0.03)", border: "1px solid rgba(198,92,0,0.10)", borderLeft: "3px solid rgba(198,92,0,0.40)" }}>
+                <p className="text-xs font-semibold mb-2" style={{ fontFamily: pf, color: "#5C3A00" }}>{item.title}</p>
+                <p className="text-sm leading-relaxed" style={{ fontFamily: pf, color: "rgba(44,24,16,0.68)" }}>{item.body}</p>
               </div>
             ))}
           </div>
@@ -391,8 +411,9 @@ export default function GaneshaContent() {
             <SecLabel>{lbl.chantSection}</SecLabel>
             <ul className="space-y-3">
               {content.howToChant.map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm leading-relaxed" style={{ fontFamily: pf, color: "rgba(255,248,230,0.50)" }}>
-                  <span style={{ color: "rgba(255,153,51,0.45)" }} className="mt-1 shrink-0">✦</span>{item}
+                <li key={i} className="flex items-start gap-2 text-sm leading-relaxed"
+                  style={{ fontFamily: pf, color: "rgba(44,24,16,0.65)" }}>
+                  <span style={{ color: "rgba(198,92,0,0.55)" }} className="mt-1 shrink-0">✦</span>{item}
                 </li>
               ))}
             </ul>
@@ -401,8 +422,9 @@ export default function GaneshaContent() {
             <SecLabel>{lbl.benefitSection}</SecLabel>
             <ul className="space-y-3">
               {content.benefits.map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm leading-relaxed" style={{ fontFamily: pf, color: "rgba(255,248,230,0.50)" }}>
-                  <span style={{ color: "rgba(212,175,55,0.45)" }} className="mt-1 shrink-0">◆</span>{item}
+                <li key={i} className="flex items-start gap-2 text-sm leading-relaxed"
+                  style={{ fontFamily: pf, color: "rgba(44,24,16,0.65)" }}>
+                  <span style={{ color: "rgba(139,105,20,0.55)" }} className="mt-1 shrink-0">◆</span>{item}
                 </li>
               ))}
             </ul>
@@ -413,12 +435,14 @@ export default function GaneshaContent() {
 
         {/* ── FOOTER ── */}
         <div className="text-center pb-6">
-          <div className="w-24 h-24 mx-auto mb-6 opacity-20"><LotusMandala /></div>
-          <p className="text-base mb-1" style={{ fontFamily: "'Noto Serif Kannada', serif", color: "rgba(212,175,55,0.38)" }}>ಗಣಪತಯೇ ನಮಃ</p>
-          <p className="text-sm" style={{ fontFamily: SA, color: "rgba(212,175,55,0.22)" }}>गणपतये नमः</p>
+          <div className="w-24 h-24 mx-auto mb-6 opacity-12"><LotusMandala /></div>
+          <p className="text-base mb-1"
+            style={{ fontFamily: "'Noto Serif Kannada', serif", color: "rgba(139,105,20,0.45)" }}>ಗಣಪತಯೇ ನಮಃ</p>
+          <p className="text-sm"
+            style={{ fontFamily: SA, color: "rgba(139,105,20,0.28)" }}>गणपतये नमः</p>
           <Link href="/spiritual"
-            className="inline-block mt-8 text-[11px] font-mono transition-opacity opacity-25 hover:opacity-55"
-            style={{ color: "#D4AF37", fontFamily: pf }}>
+            className="inline-block mt-8 text-[11px] font-mono transition-opacity opacity-30 hover:opacity-60"
+            style={{ color: "#8B6914", fontFamily: pf }}>
             {lbl.backLink}
           </Link>
         </div>
