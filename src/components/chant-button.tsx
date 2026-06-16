@@ -46,22 +46,22 @@ export default function ChantButton({
       onClick={handle}
       className="flex items-center gap-2.5 px-5 py-2.5 rounded-full transition-all duration-200 active:scale-95 hover:scale-105"
       style={{
-        background: playing ? "rgba(200,40,40,0.07)"  : "rgba(139,105,20,0.08)",
-        border:     playing ? "1px solid rgba(200,80,80,0.35)" : "1px solid rgba(139,105,20,0.30)",
-        boxShadow:  playing ? "0 2px 12px rgba(200,40,40,0.10)"   : "0 2px 12px rgba(139,105,20,0.10)",
+        background: playing ? "rgba(200,40,40,0.12)"  : "rgba(212,175,55,0.07)",
+        border:     playing ? "1px solid rgba(200,80,80,0.45)" : "1px solid rgba(212,175,55,0.35)",
+        boxShadow:  playing ? "0 0 16px rgba(200,40,40,0.20)"   : "0 0 12px rgba(212,175,55,0.10)",
       }}
     >
       <span
         className="w-2 h-2 rounded-full shrink-0"
         style={{
-          background: playing ? "#C03030" : "#8B6914",
+          background: playing ? "#C03030" : "#D4AF37",
           animation:  playing ? "subtlePulse 0.9s ease-in-out infinite" : "none",
-          boxShadow:  playing ? "0 0 6px rgba(200,40,40,0.40)" : "0 0 6px rgba(139,105,20,0.30)",
+          boxShadow:  playing ? "0 0 8px rgba(200,40,40,0.55)" : "0 0 8px rgba(212,175,55,0.45)",
         }}
       />
       <span
         className="text-xs tracking-wider"
-        style={{ color: playing ? "rgba(180,40,40,0.85)" : "rgba(139,105,20,0.90)" }}
+        style={{ color: playing ? "rgba(220,80,80,0.90)" : "rgba(212,175,55,0.90)" }}
       >
         {playing ? stopLabel : chantLabel}
       </span>

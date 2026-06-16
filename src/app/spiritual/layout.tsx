@@ -20,7 +20,9 @@ export default function SpiritualLayout({ children }: { children: React.ReactNod
           zIndex: 60,
           overflowY: "scroll",
           WebkitOverflowScrolling: "touch" as never,
-          background: "#FEF9EC",
+          backgroundColor: "#3D1000",
+          backgroundImage: "radial-gradient(rgba(212,175,55,0.045) 1px, transparent 1px), linear-gradient(160deg, #3D1000 0%, #4B1600 45%, #3D1000 100%)",
+          backgroundSize: "22px 22px, 100% 100%",
         }}
       >
         {children}
